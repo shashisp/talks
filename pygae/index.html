@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Python GAE Session!</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>Introduction to Google Appengine</h1>
+					<h3>Using Python SDK</h3>
+					<p>
+						<!-- <small>Created by <a href="http://hakim.se">Hakim El Hattab</a> / <a href="http://twitter.com/hakimel">@hakimel</a></small> -->
+					</p>
+				</section>
+
+				<section>
+					<!-- <h2>Heads Up</h2> -->
+					<p>
+						<img src="http://javahostingreview.com/wp-content/uploads/2012/12/google-app-engine-logo.png" height="150" width="150">
+					<h2>+</h2>
+					<img src="http://www.unixstickers.com/image/cache/data/stickers/python/python.sh-600x600.png" height="150" width="150">
+					 <p>= Awesome applications</p>
+					</p>
+                   
+					<p>
+						
+					</p>
+
+					<aside class="notes">
+						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
+					</aside>
+				</section>
+
+				<!-- Example of nested vertical slides -->
+				<section>
+					<section>
+						<h2>different frameworks</h2>
+						<p>
+							what all are the different frameworks does python sdk supports.
+						</p>
+						
+					</section>
+					<section>
+						<h2>webapp2</h2>
+						<p>a light weight framework of python.</p>
+					</section>
+					<section>
+						<h2>flask</h2>
+						<p>yet another microframework</p>
+						<a class="test" href="#">
+							<img width="280" height="150" src="http://flask.pocoo.org/static/logo/flask.png" alt="Unicorn">
+						</a>
+					</section>
+					<section>
+						<h2>Django</h2>
+						<p>here comes! the Mr.Awesome!</p>
+						<a class="test" href="#">
+							<img width="280" height="150" src="http://myhosting.com/blog/wp-content/uploads/2011/07/django-logo-negative-300x136.png" alt="Unicorn">
+						</a>
+					</section>
+				</section>
+
+				<section>
+					<h2>Well! Python! frameworks! blah blah!, sounds scary?</h2>
+					<p>No </p> 
+					<p>
+						It's Damn simple & easy!
+					</p>
+				</section>
+
+				<section>
+					<h2>Let's try out something!</h2>
+					
+					<p>
+						will build simple calculator using webapp2 framework.
+					</p>
+				</section>
+
+				<section>
+					<h2>basic Structure of an webapp2 based app</h2>
+					<ul>
+						<li>-app.yaml</li>
+						<li>main.py</li>
+						<li>static</li>
+						<li>templates</li>
+					</ul>
+				</section>
+
+
+                <section>
+                	<h2>app.yaml</h2>
+                	<pre><code data-trim contenteditable>
+                      
+                      application: helloworld
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /.*
+  script: main.app
+					</code></pre>
+
+
+                </section>
+
+                <section>
+                	<h2>main.py</h2>
+                	<pre><code data-trim contenteditable>
+                      import webapp2
+
+class HelloWebapp2(webapp2.RequestHandler):
+    def get(self):
+        self.response.write('Hello, webapp2!')
+
+app = webapp2.WSGIApplication([
+    ('/', HelloWebapp2),
+], debug=True)
+					</code></pre>
+
+
+                </section>
+                <section>
+                	<h2>calci.py</h2>
+                	<pre><code data-trim contenteditable>
+                      import cgi
+
+from google.appengine.api import users
+import webapp2
+
+class MainPage(webapp2.RequestHandler):
+    def get(self):
+        self.response.out.write("""
+          <html>
+            <body>
+              <form action="/sign" method="post">
+                <div><textarea name="content" rows="3" cols="60"></textarea></div>
+                <div><input type="submit" value="Sign Guestbook"></div>
+              </form>
+            </body>
+          </html>""")
+
+class Guestbook(webapp2.RequestHandler):
+    def post(self):
+        self.response.out.write('<html><body>You wrote:<pre>')
+        self.response.out.write(cgi.escape(self.request.get('content')))
+        self.response.out.write('</pre></body></html>')
+
+application = webapp2.WSGIApplication([
+    ('/', MainPage),
+    ('/sign', Guestbook)
+], debug=True)
+
+def main():
+    application.run()
+
+if __name__ == "__main__":
+    main()
+					</code></pre>
+
+
+                </section>
+                <section>
+					<h2>DataStore!</h2>
+					<p>What the heck is all about?</p>
+				</section>
+				<section>
+					<h2>we can say Database for appengine!</h2>
+					
+				</section>
+				<section>
+					<h2>Why datastore? y not RDBMS?</h2>
+					<ol>
+						<li>scalability</li>
+						<li>no complex queries, such as joins</li>
+						<li>and performance</li>
+					</ol>
+				</section>
+				<section>
+					<h2>Datastore Usage example</h2>
+					<p> Usecase Post4Blood </p>
+				</section>
+				<section>
+					<h2>How to be a Magician?</h2>
+					<p><img src="http://bestclipartblog.com/clipart-pics/witch-clip-art-15.jpg" height="400" width="400"></p>
+				</section>
+
+							<section>
+					<h2>what is magic?</h2>
+					<p> A Technique , That makes others to feel whoa!</p>
+				</section>
+
+											<section>
+					<h2>That's simple</h2>
+					<p> Using Google appengine services</p>
+				</section>
+
+											<section>
+					<h2>Memcache</h2>
+					<p> Caching ur objects and requests to increase the performance</p>
+				</section>
+
+															<section>
+					<h2>Where we can use Memcache Technqiue</h2>
+					<ul>
+						<li>Datastore query results</li>
+						<li>user auth sessions</li>
+						<li>API calls and computation results</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Why Memcache?</h2>
+					<ul>
+						<li>Improve performance</li>
+						<li>reduce costs</li>
+						
+					</ul>
+				</section>
+
+								<section>
+					<h2>Cron Jobs or scheduled tasks</h2>
+					<ul>
+						<li>querys</li>
+						<li>emails</li>
+						
+					</ul>
+				</section>
+
+
+
+				
+
+
+
+				
+
+				
+
+				<section>
+					<img src="http://4.bp.blogspot.com/_C7sYvBvpzrI/TLtYoxBDZyI/AAAAAAAAAcM/znwrIvdz9Xc/s1600/That's+All+Folks.jpg" height="400" width="400">
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
